@@ -8,7 +8,7 @@ import json
 INITIAL_FILTER = {
     'status': 'pending',
     'sortby': 'urgency',
-    'sorted_reverse': True
+    'order': 'desc'
 }
 
 async def on_shutdown(app):
