@@ -1,0 +1,24 @@
+{
+  "name": "telch",
+  "homepage": "https://github.com/vrutkovs/telch",
+  "authors": [
+    "Vadim Rutkovsky <vrutkovs@redhat.com>"
+  ],
+  "description": "Telch is a web interface for taskd - a Taskwarrior's sync server",
+  "main": "",
+  "license": "AGPLv3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "patternfly": "^3.23.1"
+  },
+  "resolutions": {
+    "jquery": "~3.2.1"
+  }
+}
