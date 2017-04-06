@@ -33,11 +33,12 @@ async def ws(request):
             else:
                 item_filter = json.loads(msg.data)
 
-            ws.send_str(json.dumps({'filter': item_filter}))
+            response = render_template('filter.jinja2', request, {'filters': item_filter})
+            ws.send_str(json.dumps({'filter': response.text}))
 
             for item in taskwarrior.get_tasks_matching(app.w, item_filter):
                 response = render_template('task.jinja2', request, {'task': item})
-                ws.send_str(response.text)
+                ws.send_str(json.dumps({'task': response.text}))
 
             ws.send_str(json.dumps({'end': True}))
     return ws

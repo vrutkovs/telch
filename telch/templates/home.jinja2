@@ -15,16 +15,16 @@
 
 {% block content %}
 
+<!-- search bar -->
+<div class="row toolbar-pf" id='filter_toolbar'>
+</div>
+
 <div class="list-group list-view-pf list-view-pf-view" id="tasks">
 </div>
 
 
 </div>
 <script>
-  function update_filter(filter_settings) {
-    
-  }
-
   function filter_items(sock) {
     var filter_value = {
       'status': 'pending',
@@ -59,6 +59,10 @@
     })
   }
 
+  function update_total_task_count(total){
+    $('#total').text(total + ' results');
+  }
+
   $(document).ready(function () {
     // toggle dropdown menu
     $('.list-view-pf-actions').on('show.bs.dropdown', function () {
@@ -68,6 +72,8 @@
       $dropdown.toggleClass('dropup', space < 10);
     });
 
+    var tasks = 0;
+
     var sock = new WebSocket('ws://' + window.location.host + '{{ws_url}}')
       sock.onmessage = function(event) {
         try {
@@ -75,12 +81,17 @@
 
           if ('end' in dta) {
             set_item_scripts()
+            update_total_task_count(tasks);
+            tasks = 0;
           } else if ('filter' in dta) {
-            update_filter(dta.filter)
+            $("#filter_toolbar").empty();
+            $("#filter_toolbar").append(dta.filter);
+          } else if ('task' in dta) {
+            $('#tasks').append(dta.task);
+            tasks++;
           }
         } catch (e) {
-          // If its not a command in a json format then it must be a task
-          $('#tasks').append(event.data);  
+          // Some unparsable json :/
         }
         
       };
