@@ -1,32 +1,36 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
+sudo: required
+
+services:
+  - docker
 
 language: python
-python: 3.5
+python:
+  - "3.5"
+  - "3.6"
 
-env:
-  - TOXENV=py35
-  - TOXENV=py34
-  - TOXENV=py33
-  - TOXENV=py27
-  - TOXENV=py26
-  - TOXENV=pypy
+install:
+  - "pip install -r requirements.txt"
+  - "pip install -r requirements_dev.txt"
+  - "flake8 telch"
+  - "python setup.py build"
 
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox
+script: "python setup.py test"
 
-# command to run tests, e.g. python setup.py test
-script: tox -e ${TOXENV}
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.5" ]]; then
+    docker build -t vrutkovs/telch . && 
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && 
+    docker push vrutkovs/telch;
+    fi
 
-# After you create the Github repo and add it to Travis, run the
-# travis_pypi_setup.py script to finish PyPI deployment setup
 deploy:
   provider: pypi
-  distributions: sdist bdist_wheel
   user: vrutkovs
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: TnDv0ni4EOM1pEKGvqOB2efDFYsdRl2MBil8i50uTqcKqcI0aiXXeb3qecNIf0eTzcvbXCEZHIrVB2lyKtTK+nw7Q4pbINoq0WMjZuhWoqg8WwTQHkVGNbijNBRnpbjKTeINciSSjvRaZWEDUaoM0x2pzTPcL507/p5fXGl54s3QDN7N98PjJzJ455drMuemev5vQd1WLCMdlBIRAVq05RZOZKqrztC+o/FC2bK8TreOWDKaE1jgWcdrPVskSZCGBq7d7SpZNUyRym17AdUQZi6QUWjf2yqFQSn8K6HcR59ABaiYax7Rl2KwfKfulfKb5BzV68E4EpqwBcZcCSdJryVhY2XGXc4c6cOAX2FvqsyjbRJ0DtXEya9c1p7y5UJPy/P9ZATKBDw/oQTHDGYvl45PwAA9LmbbKVn9zwd3vqdTMxVp7wiIBp9MGeTmIXbk+v98F8ZjNxyLF14THB4tg/qFfmlU21Bl/lI1lj7k6wUW+OQ7/s7wD4dD+85pRAQJcLI28PZ//Z5QhbhhBZrxcYMKYRTwOLm9AxD8Lert46AiyCQugzmxRe/w5P4o8Fo2bXbbMvOu8LB0HQBgq+1eaJbra/Ozm1GYkU+FaSUnva6Ey6R+Ygnt87Ek9jtdqagh55lBwCO/k3XenkxC2zqaOgjIHtG7pLT8qXuxw0muumE=
   on:
     tags: true
     repo: vrutkovs/telch
-    condition: $TOXENV == py27
+    condition: $TRAVIS_PYTHON_VERSION == "3.5"
