@@ -22,11 +22,8 @@ setup(
     author="Vadim Rutkovsky",
     author_email='vrutkovs@redhat.com',
     url='https://github.com/vrutkovs/telch',
-    packages=[
-        'telch',
-    ],
-    package_dir={'telch':
-                 'telch'},
+    packages=['telch'],
+    package_dir={'telch': 'telch'},
     include_package_data=True,
     install_requires=requirements,
     license="GNU General Public License v3",

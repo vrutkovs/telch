@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from aiohttp import web, WSCloseCode
+from taskw import TaskWarrior
 import aiohttp_jinja2
 import jinja2
 
@@ -18,5 +19,7 @@ add_routes(app.router)
 
 app['websockets'] = []
 app.on_shutdown.append(on_shutdown)
+
+app.w = TaskWarrior(marshal=True)
 
 web.run_app(app)
