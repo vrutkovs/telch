@@ -15,152 +15,31 @@
 
 {% block content %}
 
-<div class="list-group list-view-pf list-view-pf-view">
+<div class="list-group list-view-pf list-view-pf-view" id="tasks">
+</div>
 
-  {% for task in tasks|sort(attribute='urgency', reverse=True) %}
-  <div class="list-group-item" id="{{ task.uuid }}">
-    <div class="list-group-item-header">
-      <div class="list-view-pf-expand">
-        <span class="fa fa-angle-right"></span>
-      </div>
-      <!--       
-      <div class="list-view-pf-actions">
-        <button class="btn btn-default">Action</button>
-        <div class="dropdown pull-right dropdown-kebab-pf">
-          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="fa fa-ellipsis-v"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight9">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </div>
-      </div> -->
 
-      <!-- {{ task }} -->
-
-      {% set priority_icon = "fa-tasks" %}
-      {% if task.priority == "H" %}
-        {% set priority_icon = "fa-angle-double-up" %}
-      {% elif task.priority == "M" %}
-        {% set priority_icon = "fa-angle-up" %}
-      {% elif task.priority == "L" %}
-        {% set priority_icon = "fa-angle-down" %}
-      {% endif %}
-
-      <div class="list-view-pf-main-info">
-        <div class="list-view-pf-left">
-          <span class="fa {{ priority_icon }} list-view-pf-icon-sm"></span>
-        </div>
-        <div class="list-view-pf-body">
-          <div class="list-view-pf-description">
-            <div class="list-group-item-heading">
-              {{ task.project if task.project|e }}
-            </div>
-            <div class="list-group-item-text">
-              {{ task.description|e }}
-            </div>
-          </div>
-          <div class="list-view-pf-additional-info">
-            <div class="list-view-pf-additional-info-item">
-              {%- if task.githuburl %}
-                {%- if task.githubtype == "pull_request" %}
-                  {%- set github_type = "PR #" %}
-                {%- else %}
-                  {%- set github_type = "issue #" %}
-                {%- endif %}
-                <span class="fa fa-github list-view-pf-icon-sm"></span>
-                <a href="{{ task.githuburl }}" target='_blank'>{{task.githubrepo}} {{github_type}}{{task.githubnumber}}</a>
-              {%- endif %}
-
-              {%- if task.jiraurl %}
-                <span class="fa fa-bug list-view-pf-icon-sm"></span>
-                <a href="{{ task.jiraurl }}" target='_blank'>{{task.jiraid}}</a>
-              {%- endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="list-group-item-container container-fluid hidden">
-      <div class="close">
-        <span class="pficon pficon-close"></span>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <dl class="dl-horizontal">
-            <dt>Description</dt>
-            <dd>{{ task.description }}</dd>
-            <dt>Project</dt>
-            <dd>{{ task.project if task.project }}</dd>
-            <dt>Status</dt>
-            <dd>{{ task.status }}</dd>
-            {% if task.tags %}
-            <dt>Tags</dt>
-            <dd>{{ task.tags|join(', ') }}</dd>
-            {% endif %}
-            <dt>Urgency</dt>
-            <dd>{{ task.urgency }}</dd>
-            {% if task.due %}
-            <dt>Due</dt>
-            <dd>{{ task.due }}</dd>
-            {% endif %}
-
-            {% if task.entered %}
-            <dt>Entered</dt>
-            <dd>{{ task.entered }}</dd>
-            {% endif %}
-
-            {% if task.wait %}
-            <dt>Wait</dt>
-            <dd>{{ task.wait }}</dd>
-            {% endif %}
-
-            {% if task.scheduled %}
-            <dt>Scheduled</dt>
-            <dd>{{ task.scheduled }}</dd>
-            {% endif %}
-
-            <dt>Modified</dt>
-            <dd>{{ task.modified }}</dd>
-          </dl>
-          
-        </div>
-        <div class="col-md-6">
-          <dl class="dl-horizontal">
-          {% for annotation in task.annotations %}
-            <dd>{{ annotation|urlize(40, target='_blank') }}</dd>
-          {% endfor %}
-          </dl>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-10">
-          {% if task.jiradescription %}
-            {% set title,description = task.jirasummary,task.jiradescription %}
-          {% elif task.githubbody %}
-            {% set title,description = task.githubtitle,task.githubbody %}
-          {% endif %}
-          <strong>{{title}}</strong><br/>
-          <pre class="invisible-pre">{{description|truncate(killwords=True)|e }}</pre>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
 </div>
 <script>
-  $(document).ready(function () {
-    // toggle dropdown menu
-    $('.list-view-pf-actions').on('show.bs.dropdown', function () {
-      var $this = $(this);
-      var $dropdown = $this.find('.dropdown');
-      var space = $(window).height() - $dropdown[0].getBoundingClientRect().top - $this.find('.dropdown-menu').outerHeight(true);
-      $dropdown.toggleClass('dropup', space < 10);
-    });
+  function update_filter(filter_settings) {
+    
+  }
+
+  function filter_items(sock) {
+    var filter_value = {
+      'status': 'pending',
+      'sortby': 'urgency',
+      'sorted_reverse': true
+    }
+    sock.send(filter_value);
+  }
+
+  function set_item_scripts() {
+    // matchHeight the contents of each .card-pf and then the .card-pf itself
+    $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
+    $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
+    $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
+    $(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
 
     // click the list-view heading then expand a row
     $(".list-group-item-header").click(function(event){
@@ -178,7 +57,36 @@
         .parent().removeClass("list-view-pf-expand-active")
           .find(".fa-angle-right").removeClass("fa-angle-down");
     })
+  }
 
+  $(document).ready(function () {
+    // toggle dropdown menu
+    $('.list-view-pf-actions').on('show.bs.dropdown', function () {
+      var $this = $(this);
+      var $dropdown = $this.find('.dropdown');
+      var space = $(window).height() - $dropdown[0].getBoundingClientRect().top - $this.find('.dropdown-menu').outerHeight(true);
+      $dropdown.toggleClass('dropup', space < 10);
+    });
+
+    var sock = new WebSocket('ws://' + window.location.host + '{{ws_url}}')
+      sock.onmessage = function(event) {
+        try {
+          dta = $.parseJSON(event.data);
+
+          if ('end' in dta) {
+            set_item_scripts()
+          } else if ('filter' in dta) {
+            update_filter(dta.filter)
+          }
+        } catch (e) {
+          // If its not a command in a json format then it must be a task
+          $('#tasks').append(event.data);  
+        }
+        
+      };
+      sock.onopen = function(){
+        sock.send("ready");
+      };
   });
 </script>
 {% endblock %}
