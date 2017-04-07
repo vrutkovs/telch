@@ -13,6 +13,10 @@ def get_tasks_matching(w, filter_dict):
     else:
         tasks = tasks['pending'] + tasks['completed']
 
+    if 'substring' in filter_dict:
+        for key, value in filter_dict['substring'].items():
+            tasks = [x for x in tasks if value in x.get(key)]
+
     if 'sortby' in filter_dict:
         order = filter_dict.get('order', 'asc')
         key = filter_dict['sortby']

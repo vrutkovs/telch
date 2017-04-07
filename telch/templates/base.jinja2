@@ -120,6 +120,22 @@
       $("#filter-sortby").html(li.text() + ' <span class="caret"></span>');
     }
 
+    if ('substring' in document.filter_value) {
+      substring = document.filter_value.substring;
+      for (var key in substring) {
+        console.log("substring key:"+key+" value: "+substring[key]);
+        $("#filter-substring").attr('data-selected', key);
+        $("#filter-substring-ddown").children().removeClass("selected");
+        li = $("#filter-substring-ddown > li[data-value='"+key+"'");
+        console.log("li: "+li.text());
+        li.addClass("selected");
+        $("#filter-substring").html(li.text() + ' <span class="caret"></span>');
+
+        $("#filter-text").val(substring[key]);
+        break;
+      }
+    }
+
     console.log('update_left_navbar-');
   }
 

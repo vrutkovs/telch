@@ -41,7 +41,7 @@
       <span class="spinner spinner-inline spinner-xs" id="progress-spinner" class='invisible'></span>
       <p>Active filters:</p>
       <ul class="list-inline">
-        {% for key, value in filters.items() %}
+        {% for key, value in filters.items() if key != 'substring' %}
           <li>
             <span class="label label-info">
               {{ key|capitalize }}: {{ value|capitalize }}
@@ -56,6 +56,45 @@
 </div>
 
 <script>
+
+(function($){
+    $.fn.extend({
+        donetyping: function(callback,timeout){
+            timeout = timeout || 1e3; // 1 second default timeout
+            var timeoutReference,
+                doneTyping = function(el){
+                    if (!timeoutReference) return;
+                    timeoutReference = null;
+                    callback.call(el);
+                };
+            return this.each(function(i,el){
+                var $el = $(el);
+                // Chrome Fix (Use keyup over keypress to detect backspace)
+                // thank you @palerdot
+                $el.is(':input') && $el.on('keyup keypress paste',function(e){
+                    // This catches the backspace button in chrome, but also prevents
+                    // the event from triggering too preemptively. Without this line,
+                    // using tab/shift+tab will make the focused element fire the callback.
+                    if (e.type=='keyup' && e.keyCode!=8) return;
+                    
+                    // Check if timeout has been set. If it has, "reset" the clock and
+                    // start over again.
+                    if (timeoutReference) clearTimeout(timeoutReference);
+                    timeoutReference = setTimeout(function(){
+                        // if we made it here, our timeout has elapsed. Fire the
+                        // callback
+                        doneTyping(el);
+                    }, timeout);
+                }).on('blur',function(){
+                    // If we can, fire the event since we're leaving the field
+                    doneTyping(el);
+                });
+            });
+        }
+    });
+})(jQuery);
+
+
 function send_filter_updates(){
   console.log('send_filter_updates+');
   filter_value_str = JSON.stringify(document.filter_value);
@@ -118,6 +157,18 @@ $(document).ready(function () {
     document.filter_value[field] = new_value;
     send_filter_updates();
     console.log('filter-order-');
+  });
+
+  $("#filter-text").donetyping(function(){
+    console.log('substring+');
+    text = $(this).val();
+    field = $("#filter-substring-ddown > li.selected").attr('data-value');
+    console.log('Looking for "'+text+'" in field "'+field+"'");
+    json = {}
+    json[field] = text
+    document.filter_value['substring'] = json;
+    send_filter_updates();
+    console.log('substring-');
   });
  });
 </script>
