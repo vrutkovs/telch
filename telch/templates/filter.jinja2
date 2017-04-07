@@ -6,9 +6,11 @@
         <div class="input-group-btn">
           <button id='filter-substring' type="button" class="btn btn-default dropdown-toggle" data-selected='Description' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Description <span class="caret"></span></button>
           <ul id='filter-substring-ddown' class="dropdown-menu" aria-labelledby="filter-substring">
-            <li data-value='description' class="selected"><a href="#">Description</a></li>
-            <li data-value='project'><a href="#">Project</a></li>
-            <li data-value='status'><a href="#">Status</a></li>
+            {% for key in substring %}
+            <li data-value='{{key}}' {%- if loop.first %}class="selected"{%-endif%}>
+              <a href="#">{{ labels[key] }}</a>
+            </li>
+            {% endfor %}
           </ul>
         </div>
         <input type="text" class="form-control" id="filter-text" placeholder="Filter By ...">
@@ -18,11 +20,11 @@
       <div class="dropdown btn-group">
         <button id='filter-sortby' type="button" class="btn btn-default dropdown-toggle" data-selected='Urgency' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Urgency <span class="caret"></span></button>
         <ul class="dropdown-menu" data-field="sortby" aria-labelledby="filter-sortby">
-          <li data-value='urgency' class="selected"><a href="#">Urgency</a></li>
-          <li data-value='project'><a href="#">Project</a></li>
-          <li data-value='priority'><a href="#">Priority</a></li>
-          <li data-value='due'><a href="#">Due</a></li>
-          <li data-value='modified'><a href="#">Last Modified</a></li>
+            {% for key in sort %}
+            <li data-value='{{key}}' {%- if loop.first %}class="selected"{%-endif%}>
+              <a href="#">{{ labels[key] }}</a>
+            </li>
+            {% endfor %}
         </ul>
       </div>
       <button id='filter-order' class="btn btn-link" data-field="order" data-selected='asc' type="button">
@@ -39,13 +41,13 @@
         {% for key, value in filters.items() if key != 'substring' %}
           <li>
             <span class="label label-info">
-              {{ key|capitalize }}: {{ value|capitalize }}
+              {{ labels[key] }}: {{ labels[value] if value in labels else value|capitalize }}
               <a href="#" id="filter_close_{{key}}" class='filter-close'><span class="pficon pficon-close"></span></a>
             </span>
           </li>
         {% endfor %}
       </ul>
-      <p><a href="#" id="filter-clear">Clear All Filters</a></p>
+      <p><a href="#" id="filter-clear">Clear</a></p>
     </div>
   </div>
 </div>

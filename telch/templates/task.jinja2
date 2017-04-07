@@ -70,39 +70,39 @@
     <div class="row">
       <div class="col-md-4">
         <dl class="dl-horizontal">
-          <dt>Description</dt>
+          <dt>{{ labels['description'] }}</dt>
           <dd>{{ task.description }}</dd>
-          <dt>Project</dt>
+          <dt>{{ labels['project'] }}</dt>
           <dd>{{ task.project if task.project }}</dd>
-          <dt>Status</dt>
+          <dt>{{ labels['status'] }}</dt>
           <dd>{{ task.status }}</dd>
           {% if task.tags %}
-          <dt>Tags</dt>
+          <dt>{{ labels['tags'] }}</dt>
           <dd>{{ task.tags|join(', ') }}</dd>
           {% endif %}
-          <dt>Urgency</dt>
+          <dt>{{ labels['urgency'] }}</dt>
           <dd>{{ task.urgency }}</dd>
           {% if task.due %}
-          <dt>Due</dt>
+          <dt>{{ labels['due'] }}</dt>
           <dd>{{ task.due }}</dd>
           {% endif %}
 
           {% if task.entered %}
-          <dt>Entered</dt>
+          <dt>{{ labels['entered'] }}</dt>
           <dd>{{ task.entered }}</dd>
           {% endif %}
 
           {% if task.wait %}
-          <dt>Wait</dt>
+          <dt>{{ labels['wait'] }}</dt>
           <dd>{{ task.wait }}</dd>
           {% endif %}
 
           {% if task.scheduled %}
-          <dt>Scheduled</dt>
+          <dt>{{ labels['scheduled'] }}</dt>
           <dd>{{ task.scheduled }}</dd>
           {% endif %}
 
-          <dt>Modified</dt>
+          <dt>{{ labels['modified'] }}</dt>
           <dd>{{ task.modified }}</dd>
         </dl>
         

@@ -11,9 +11,28 @@ INITIAL_FILTER = {
     'order': 'desc'
 }
 
+# TODO: make those translatable?
 LABEL_MAPPING = {
-    
+    'description': 'Description',
+    'project': 'Project',
+    'status': 'Status',
+    'urgency': 'Urgency',
+    'priority': 'Priority',
+    'due': 'Due',
+    'modified': 'Last Modified',
+    'sortby': 'Sort By',
+    'order': 'Order',
+    'asc': 'Ascending',
+    'desc': 'Descending',
+    'tags': 'Tags',
+    'entered': 'Entered',
+    'wait': 'Wait Until',
+    'scheduled': 'Scheduled'
+
 }
+
+SUBSTRING_ITEMS = ['description', 'project', 'status']
+SORT_ITEMS = ['urgency', 'project', 'priority', 'due', 'modified']
 
 async def on_shutdown(app):
     for ws in app['websockets']:
@@ -23,8 +42,7 @@ async def on_shutdown(app):
 
 @template('home.jinja2')
 async def root(request):
-    return {
-        'ws_url': request.app.router['ws'].url_for()}
+    return {'ws_url': request.app.router['ws'].url_for()}
 
 
 async def ws(request):
@@ -37,14 +55,20 @@ async def ws(request):
                 print("Got data: '%s'" % msg.data)
                 request.app['active_filter'] = json.loads(msg.data)
 
-            response = render_template('filter.jinja2', request,
-                                       {'filters': request.app['active_filter']})
+            filter_data = {
+                'filters': request.app['active_filter'],
+                'labels': LABEL_MAPPING,
+                'substring': SUBSTRING_ITEMS,
+                'sort': SORT_ITEMS}
+            response = render_template('filter.jinja2', request, filter_data)
             ws.send_str(json.dumps({'filter_html': response.text}))
             ws.send_str(json.dumps({'filter_json': request.app['active_filter']}))
 
             tasks = taskwarrior.get_tasks_matching(app.w, request.app['active_filter'])
             for task in tasks:
-                response = render_template('task.jinja2', request, {'task': task})
+                response = render_template(
+                    'task.jinja2', request,
+                    {'labels': LABEL_MAPPING, 'task': task})
                 ws.send_str(json.dumps({'task': response.text}))
 
             ws.send_str(json.dumps({'end': True}))
