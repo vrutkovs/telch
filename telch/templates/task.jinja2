@@ -78,7 +78,8 @@
           <dd>{{ task.status }}</dd>
           {% if task.tags %}
           <dt>{{ labels['tags'] }}</dt>
-          <dd>{{ task.tags|join(', ') }}</dd>
+          <dd><span class="fa fa-tag"></span>&nbsp;
+          {{ task.tags|join(',&nbsp;<span class="fa fa-tag"></span>&nbsp;') }}</dd>
           {% endif %}
           <dt>{{ labels['urgency'] }}</dt>
           <dd>{{ task.urgency }}</dd>
