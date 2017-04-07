@@ -43,35 +43,22 @@
     </nav>
   </nav>
 
-  {% set all_tasks_active = False %}
-  {% set pending_tasks_active = False %}
-  {% set complete_tasks_active = False %}
-
-  {% if active_filter.status == "pending" %}
-    {% set pending_tasks_active = True %}
-  {% elif active_filter.status == "complete" %}
-    {% set complete_tasks_active = True %}
-  {% else %}
-    {% set all_tasks_active = True %}
-  {% endif %}
-  <!-- {{active_filter}} -->
-
   <!-- left navigation sidebar -->
   <div class="nav-pf-vertical nav-pf-vertical-with-sub-menus">
     <ul class="list-group">
-      <li class="list-group-item {%- if all_tasks_active %} active{%- endif %}">
-        <a id='filter-all'>
+      <li id='filter-all' class="list-group-item">
+        <a>
           <span class="fa fa-tasks" data-toggle="tooltip" title="All tasks"></span>
           <span class="list-group-item-value">All tasks</span>
         </a>
       </li>
-      <li class="list-group-item {%- if pending_tasks_active %} active{%- endif %}">
-        <a id='filter-pending'>
+      <li id='filter-pending' class="list-group-item">
+        <a>
           <span class="fa fa-list-ul" data-toggle="tooltip" title="Pending"></span>
           <span class="list-group-item-value">Pending</span>
         </a>
       </li>
-      <li class="list-group-item {%- if complete_tasks_active %} active{%- endif %}">
+      <li class="list-group-item">
         <a id='filter-completed'>
           <span class="fa fa-check" data-toggle="tooltip" title="Completed"></span>
           <span class="list-group-item-value">Completed</span>
@@ -100,6 +87,26 @@
 
     // Initialize the vertical navigation
     $().setupVerticalNavigation(true);
+
+    function update_left_navbar(){
+      if ('status' in document.filter_value) {
+        if (document.filter_value.status == 'pending') {
+          $("#filter-all").removeClass("active");
+          $("#filter-pending").addClass("active");
+          $("#filter-completed").removeClass("active");
+        } else if (document.filter_value.status == 'completed') {
+          $("#filter-all").removeClass("active");
+          $("#filter-pending").removeClass("active");
+          $("#filter-completed").addClass("active");
+        } else {
+          // unknown status? Weird
+        }
+      } else {
+        $("#filter-all").addClass("active");
+        $("#filter-pending").removeClass("active");
+        $("#filter-completed").removeClass("active");
+      }
+    }
   });
 })(jQuery);
 </script>

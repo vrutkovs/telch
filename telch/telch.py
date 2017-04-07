@@ -20,8 +20,7 @@ async def on_shutdown(app):
 @template('home.jinja2')
 async def root(request):
     return {
-        'ws_url': request.app.router['ws'].url_for(),
-        'active_filter': request.app['active_filter']}
+        'ws_url': request.app.router['ws'].url_for()}
 
 
 async def ws(request):
@@ -31,11 +30,13 @@ async def ws(request):
     async for msg in ws:
         if msg.tp == WSMsgType.text:
             if msg.data != 'ready':
+                print("Got data: '%s'" % msg.data)
                 request.app['active_filter'] = json.loads(msg.data)
 
+            ws.send_str(json.dumps({'filter_json': request.app['active_filter']}))
             response = render_template('filter.jinja2', request,
                                        {'filters': request.app['active_filter']})
-            ws.send_str(json.dumps({'filter': response.text}))
+            ws.send_str(json.dumps({'filter_html': response.text}))
 
             tasks = taskwarrior.get_tasks_matching(app.w, request.app['active_filter'])
             for task in tasks:

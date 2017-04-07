@@ -44,12 +44,39 @@
           <li>
             <span class="label label-info">
               {{ key|capitalize }}: {{ value|capitalize }}
-              <a href="#"><span class="pficon pficon-close"></span></a>
+              <a href="#" id="filter_close_{{key}}" class='filter-close'><span class="pficon pficon-close"></span></a>
             </span>
           </li>
         {% endfor %}
       </ul>
-      <p><a href="#">Clear All Filters</a></p>
+      <p><a href="#" id="filter-clear">Clear All Filters</a></p>
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready(function () {
+  function update_total_task_count(total){
+    console.log('update_total_task_count+');
+    $('#total').text(total + ' results');
+    console.log('update_total_task_count-');
+  }
+
+  $('.filter-close').click(function () {
+    console.log('filter-close+');
+    id = $(this).attr('id');
+    console.log('id: '+id);
+    parts = id.split('_');
+    filter_name = parts[parts.length - 1];
+    console.log('filter_name: '+filter_name);
+    delete document.filter_value[filter_name];
+    console.log('filter_value: '+document.filter_value);
+    document.sock.send(JSON.stringify(document.filter_value));
+    console.log('filter-close-');
+  });
+
+  $('#filter-clear').click(function(){
+    document.sock.send('{}');
+  });
+ });
+</script>

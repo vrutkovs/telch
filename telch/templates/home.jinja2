@@ -25,15 +25,6 @@
 
 </div>
 <script>
-  function filter_items(sock) {
-    var filter_value = {
-      'status': 'pending',
-      'sortby': 'urgency',
-      'sorted_reverse': true
-    }
-    sock.send(filter_value);
-  }
-
   function set_item_scripts() {
     // matchHeight the contents of each .card-pf and then the .card-pf itself
     $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
@@ -59,44 +50,44 @@
     })
   }
 
-  function update_total_task_count(total){
-    $('#total').text(total + ' results');
-  }
-
   $(document).ready(function () {
-    // toggle dropdown menu
-    $('.list-view-pf-actions').on('show.bs.dropdown', function () {
-      var $this = $(this);
-      var $dropdown = $this.find('.dropdown');
-      var space = $(window).height() - $dropdown[0].getBoundingClientRect().top - $this.find('.dropdown-menu').outerHeight(true);
-      $dropdown.toggleClass('dropup', space < 10);
-    });
-
     var tasks = 0;
 
-    var sock = new WebSocket('ws://' + window.location.host + '{{ws_url}}')
-      sock.onmessage = function(event) {
+    document.sock = new WebSocket('ws://' + window.location.host + '{{ws_url}}')
+      document.sock.onmessage = function(event) {
         try {
           dta = $.parseJSON(event.data);
 
           if ('end' in dta) {
+            console.log('ws: end+');
             set_item_scripts()
             update_total_task_count(tasks);
+            console.log('ws: end-');
+          } else if ('filter_json' in dta) {
+            console.log('ws: filter_json+');
+            document.filter_value = dta.filter_json;
+            update_left_navbar();
+            console.log('ws: filter_json-');
+          } else if ('filter_html' in dta) {
+            console.log('ws: filter_html+');
             tasks = 0;
-          } else if ('filter' in dta) {
+            $('#tasks').empty();
             $("#filter_toolbar").empty();
-            $("#filter_toolbar").append(dta.filter);
+            $("#filter_toolbar").append(dta.filter_html);
+            console.log('ws: filter_html-');
           } else if ('task' in dta) {
+            console.log('ws: task+');
             $('#tasks').append(dta.task);
             tasks++;
+            console.log('ws: task-');
           }
         } catch (e) {
           // Some unparsable json :/
         }
         
       };
-      sock.onopen = function(){
-        sock.send("ready");
+      document.sock.onopen = function(){
+        document.sock.send("ready");
       };
   });
 </script>
