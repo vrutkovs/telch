@@ -11,6 +11,10 @@ INITIAL_FILTER = {
     'order': 'desc'
 }
 
+LABEL_MAPPING = {
+    
+}
+
 async def on_shutdown(app):
     for ws in app['websockets']:
         await ws.close(code=WSCloseCode.GOING_AWAY,
@@ -33,10 +37,10 @@ async def ws(request):
                 print("Got data: '%s'" % msg.data)
                 request.app['active_filter'] = json.loads(msg.data)
 
-            ws.send_str(json.dumps({'filter_json': request.app['active_filter']}))
             response = render_template('filter.jinja2', request,
                                        {'filters': request.app['active_filter']})
             ws.send_str(json.dumps({'filter_html': response.text}))
+            ws.send_str(json.dumps({'filter_json': request.app['active_filter']}))
 
             tasks = taskwarrior.get_tasks_matching(app.w, request.app['active_filter'])
             for task in tasks:

@@ -92,6 +92,34 @@
       $("#filter-pending").removeClass("active");
       $("#filter-completed").removeClass("active");
     }
+
+    // Hide 'Clear all filters' if none are set
+    if (document.filter_value == {}) {
+      $("#filter-clear").hide();
+    } else {
+      $("#filter-clear").show();
+    }
+
+    // Update dropdown values if set
+    if ('order' in document.filter_value) {
+      value = document.filter_value.order;
+      $("#filter-order").attr('data-selected', value);
+      $("#filter-order").children().removeClass();
+      $("#filter-order").children().addClass('fa');
+      $("#filter-order").children().addClass('fa-sort-alpha-'+value);
+    }
+
+    if ('sortby' in document.filter_value) {
+      value = document.filter_value.sortby;
+      $("#filter-sortby").attr('data-selected', value);
+      list = $(".dropdown-menu[data-field='sortby']");
+      list.children().removeClass("selected");
+      li = $(".dropdown-menu[data-field='sortby'] > li[data-value='"+value+"'");
+      li.addClass("selected");
+
+      $("#filter-sortby").html(li.text() + ' <span class="caret"></span>');
+    }
+
     console.log('update_left_navbar-');
   }
 
