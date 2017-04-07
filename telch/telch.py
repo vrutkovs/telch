@@ -36,6 +36,7 @@ LABEL_MAPPING = {
 SUBSTRING_ITEMS = ['any', 'description', 'project', 'githubrepo', 'jiraid', 'tags']
 SORT_ITEMS = ['urgency', 'project', 'priority', 'due', 'modified']
 
+
 async def on_shutdown(app):
     for ws in app['websockets']:
         await ws.close(code=WSCloseCode.GOING_AWAY,
