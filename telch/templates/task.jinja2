@@ -39,6 +39,7 @@
             {{ task.project if task.project|e }}
           </div>
           <div class="list-group-item-text">
+            <span class="badge" title="Urgency">{{ task.urgency }}</span>
             {{ task.description|e }}
           </div>
         </div>
@@ -65,24 +66,11 @@
   </div>
   <div class="list-group-item-container container-fluid hidden">
     <div class="row">
-      <div class="col-md-4">
-        <dl class="dl-horizontal">
-          <dt>{{ labels['description'] }}</dt>
-          <dd>{{ task.description }}</dd>
-          <dt>{{ labels['project'] }}</dt>
-          <dd>{{ task.project if task.project }}</dd>
+      <div class="col-md-5">
+        <dl class="dl-horizontal dl-short">
           <dt>{{ labels['status'] }}</dt>
           <dd>{{ task.status }}</dd>
-          {% if task.tags %}
-            <dt>{{ labels['tags'] }}</dt>
-            <dd><ul class="list-unstyled">
-            {%- for tag in task.tags %}
-              <li><span class="fa fa-tag"></span>&nbsp;{{tag}}</li>
-            {%-endfor%}
-            </ul>
-          {% endif %}
-          <dt>{{ labels['urgency'] }}</dt>
-          <dd>{{ task.urgency }}</dd>
+
           {% if task.due %}
           <dt>{{ labels['due'] }}</dt>
           <dd>{{ task.due }}</dd>
@@ -105,10 +93,19 @@
 
           <dt>{{ labels['modified'] }}</dt>
           <dd>{{ task.modified }}</dd>
+
+          {% if task.tags %}
+            <dt>{{ labels['tags'] }}</dt>
+            <dd><ul class="list-unstyled">
+            {%- for tag in task.tags %}
+              <li><span class="fa fa-tag"></span>&nbsp;{{tag}}</li>
+            {%-endfor%}
+            </ul>
+          {% endif %}
         </dl>
         
       </div>
-      <div class="col-md-6">
+      <div class="col-md-7">
         <dl class="dl-horizontal">
         {% for annotation in task.annotations %}
           <dd>{{ annotation|urlize(40, target='_blank') }}</dd>
