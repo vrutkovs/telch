@@ -8,5 +8,24 @@
 }
 
 .telch-brand {
-    padding: 5px 10px;
+    padding: 9px 10px;
+}
+
+.navbar-button {
+    background: transparent;
+    border: 0;
+    margin: 13px 15px;
+    padding: 9px 10px;
+    color: #9c9c9c;
+}
+
+.navbar-button-spinning {
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }

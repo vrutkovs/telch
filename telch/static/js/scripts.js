@@ -250,6 +250,12 @@
       $(".find-pf-dropdown-container").hide();
     });
 
+    // Sync button
+    $("#sync-button").click(function() {
+      $(this).addClass('navbar-button-spin');
+      document.sock.send("sync");
+    });
+
     // Listen to websocket changes
     document.sock = new WebSocket('ws://' + window.location.host + document.ws_url);
       document.sock.onmessage = function(event) {
@@ -260,6 +266,7 @@
             console.log('ws: end+');
             set_item_scripts()
             update_total_task_count(tasks);
+            $("#sync-button").removeClass('navbar-button-spin');
             console.log('ws: end-');
           } else if ('filter_json' in dta) {
             console.log('ws: filter_json+');

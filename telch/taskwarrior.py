@@ -5,6 +5,10 @@ def get_taskwarrior_instance():
     return TaskWarrior(marshal=True)
 
 
+def sync(w):
+    w.sync()
+
+
 def filter_tasks_by_field(tasks, key, value):
     result = []
     for x in tasks:

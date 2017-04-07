@@ -53,7 +53,9 @@ async def ws(request):
     await ws.prepare(request)
     async for msg in ws:
         if msg.tp == WSMsgType.text:
-            if msg.data != 'ready':
+            if msg.data in ['ready', 'sync']:
+                taskwarrior.sync(app.w)
+            else:
                 print("Got data: '%s'" % msg.data)
                 request.app['active_filter'] = json.loads(msg.data)
 
