@@ -4,7 +4,7 @@
       <label class="sr-only" for="filter">Description</label>
       <div class="input-group">
         <div class="input-group-btn">
-          <button id='filter-substring' type="button" class="btn btn-default dropdown-toggle" data-selected='Description' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Description <span class="caret"></span></button>
+          <button id='filter-substring' type="button" class="btn btn-default dropdown-toggle" data-selected='Description' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ labels[substring[0]] }} <span class="caret"></span></button>
           <ul id='filter-substring-ddown' class="dropdown-menu" aria-labelledby="filter-substring">
             {% for key in substring %}
             <li data-value='{{key}}' {%- if loop.first %}class="selected"{%-endif%}>
@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
       <div class="dropdown btn-group">
-        <button id='filter-sortby' type="button" class="btn btn-default dropdown-toggle" data-selected='Urgency' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Urgency <span class="caret"></span></button>
+        <button id='filter-sortby' type="button" class="btn btn-default dropdown-toggle" data-selected='Urgency' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ labels[sort[0]] }} <span class="caret"></span></button>
         <ul class="dropdown-menu" data-field="sortby" aria-labelledby="filter-sortby">
             {% for key in sort %}
             <li data-value='{{key}}' {%- if loop.first %}class="selected"{%-endif%}>
