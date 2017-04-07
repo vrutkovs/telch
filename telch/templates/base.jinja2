@@ -15,6 +15,8 @@
     <script src="/static/bower/c3/c3.min.js"></script>
     <script src="/static/bower/d3/d3.min.js"></script>
     <script src="/static/bower/matchHeight/dist/jquery.matchHeight-min.js"></script>
+
+    <link href="/static/css/telch.css" rel="stylesheet" media="screen, print">
     <script src="/static/js/scripts.js"></script>
 
     {% block extra_head %}{% endblock %}
@@ -32,7 +34,7 @@
         <span class="icon-bar"></span>
       </button>
       <a href="/" class="navbar-brand">
-        <h3 class="navbar-brand-name" style="padding: 5px 10px">Telch</h3>
+        <h3 class="navbar-brand-name telch-brand">Telch</h3>
       </a>
     </div>
     <nav class="collapse navbar-collapse">
@@ -74,11 +76,6 @@
   <div class="container-fluid container-cards-pf container-pf-nav-pf-vertical">
     {% block content %}{% endblock %}
   </div>
-
-      
-<script>
-</script>
-
 </body>
 </html>
       
