@@ -4,7 +4,7 @@
   "authors": [
     "Vadim Rutkovsky <vrutkovs@redhat.com>"
   ],
-  "description": "Telch is a web interface for taskd - a Taskwarrior's sync server",
+  "description": "Telch is a web interface for Taskwarrior",
   "main": "",
   "license": "AGPLv3",
   "ignore": [

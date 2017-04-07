@@ -17,7 +17,7 @@ test_requirements = [str(x.req) for x in parsed_reqs_dev]
 setup(
     name='telch',
     version='0.1.0',
-    description="Telch is a web interface for taskd - a Taskwarrior's sync server",
+    description="Telch is a web interface for Taskwarrior",
     long_description=readme,
     author="Vadim Rutkovsky",
     author_email='vrutkovs@redhat.com',

@@ -18,7 +18,7 @@ Telch
      :alt: Updates
 
 
-Telch is a web interface for taskd - a Taskwarrior's sync server
+Telch is a web interface for Taskwarrior
 
 
 * Free software: GNU General Public License v3
