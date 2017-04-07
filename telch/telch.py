@@ -29,11 +29,11 @@ LABEL_MAPPING = {
     'wait': 'Wait Until',
     'scheduled': 'Scheduled',
     'githubrepo': 'Github Repo',
-    'jiraproject': 'Jira Project'
+    'jiraid': 'Jira ID',
 
 }
 
-SUBSTRING_ITEMS = ['description', 'project', 'githubrepo', 'jiraproject', 'tags']
+SUBSTRING_ITEMS = ['description', 'project', 'githubrepo', 'jiraid', 'tags']
 SORT_ITEMS = ['urgency', 'project', 'priority', 'due', 'modified']
 
 async def on_shutdown(app):
