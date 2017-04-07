@@ -190,6 +190,15 @@
         send_filter_updates();
         console.log('substring-');
       });
+
+      $("#projects-secondary > ul > li > a").click(function(){
+        console.log('project-list+');
+        value = $(this).parent().attr("data-value");
+        console.log('project:'+value);
+        document.filter_value['project'] = value;
+        send_filter_updates();
+        console.log('project-list-');
+      });
   }
 
   (function($){

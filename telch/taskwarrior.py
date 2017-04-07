@@ -27,6 +27,15 @@ def filter_tasks_by_field(tasks, key, value):
     return result
 
 
+def get_projects_list(w):
+    tasks = w.load_tasks(command='all')['pending']
+    projects = set()
+    for task in tasks:
+        if 'project' in task:
+            projects.add(task['project'])
+    return sorted(list(projects), key=lambda x: x.lower())
+
+
 def get_tasks_matching(w, filter_dict):
     tasks = w.load_tasks(command='all')
 
@@ -34,6 +43,9 @@ def get_tasks_matching(w, filter_dict):
         tasks = tasks[filter_dict['status'].lower()]
     else:
         tasks = tasks['pending'] + tasks['completed']
+
+    if 'project' in filter_dict:
+        tasks = [x for x in tasks if x.get('project', '') == filter_dict['project']]
 
     if 'substring' in filter_dict:
         for key, value in filter_dict['substring'].items():

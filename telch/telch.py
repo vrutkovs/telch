@@ -45,7 +45,11 @@ async def on_shutdown(app):
 
 @template('home.jinja2')
 async def root(request):
-    return {'ws_url': request.app.router['ws'].url_for()}
+    taskwarrior.sync(app.w)
+    projects = taskwarrior.get_projects_list(app.w)
+    return {
+        'ws_url': request.app.router['ws'].url_for(),
+        'projects': projects}
 
 
 async def ws(request):
