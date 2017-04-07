@@ -42,7 +42,7 @@
           <li>
             <span class="label label-info">
               {%- if key != 'substring' %}
-              {{ labels[key] }}: {{ labels[value] if value in labels else value|capitalize }}
+              {{ labels[key] }}: {{ labels[value] if value in labels else value }}
               {%- else %}
                 {% for subs_key, subs_value in value.items() %}
                   {{ labels[subs_key] }} contains "{{ subs_value }}"
