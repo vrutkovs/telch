@@ -43,25 +43,42 @@
     </nav>
   </nav>
 
+  {% set all_tasks_active = False %}
+  {% set pending_tasks_active = False %}
+  {% set complete_tasks_active = False %}
+
+  {% if active_filter.status == "pending" %}
+    {% set pending_tasks_active = True %}
+  {% elif active_filter.status == "complete" %}
+    {% set complete_tasks_active = True %}
+  {% else %}
+    {% set all_tasks_active = True %}
+  {% endif %}
+  <!-- {{active_filter}} -->
+
   <!-- left navigation sidebar -->
-  <!-- <div class="nav-pf-vertical nav-pf-vertical-with-sub-menus">
+  <div class="nav-pf-vertical nav-pf-vertical-with-sub-menus">
     <ul class="list-group">
-      <li class="list-group-item">
-        <a>
-          <span class="fa fa-dashboard" data-toggle="tooltip" title="Dashboard"></span>
-          <span class="list-group-item-value">Dashboard</span>
+      <li class="list-group-item {%- if all_tasks_active %} active{%- endif %}">
+        <a id='filter-all'>
+          <span class="fa fa-tasks" data-toggle="tooltip" title="All tasks"></span>
+          <span class="list-group-item-value">All tasks</span>
         </a>
       </li>
-      <li class="list-group-item">
-        <a>
-          <span class="fa fa-shield" data-toggle="tooltip" title="Dolor"></span>
-          <span class="list-group-item-value">Dolor</span>
+      <li class="list-group-item {%- if pending_tasks_active %} active{%- endif %}">
+        <a id='filter-pending'>
+          <span class="fa fa-list-ul" data-toggle="tooltip" title="Pending"></span>
+          <span class="list-group-item-value">Pending</span>
         </a>
       </li>
-      
-      
+      <li class="list-group-item {%- if complete_tasks_active %} active{%- endif %}">
+        <a id='filter-completed'>
+          <span class="fa fa-check" data-toggle="tooltip" title="Completed"></span>
+          <span class="list-group-item-value">Completed</span>
+        </a>
+      </li>
     </ul>
-  </div> -->
+  </div>
 
   <div class="container-fluid container-cards-pf container-pf-nav-pf-vertical">
     {% block content %}{% endblock %}
