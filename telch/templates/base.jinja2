@@ -72,8 +72,29 @@
   </div>
 
       
-</body>
 <script>
+  function update_left_navbar(){
+    console.log('update_left_navbar+');
+    if ('status' in document.filter_value) {
+      if (document.filter_value.status == 'pending') {
+        $("#filter-all").removeClass("active");
+        $("#filter-pending").addClass("active");
+        $("#filter-completed").removeClass("active");
+      } else if (document.filter_value.status == 'completed') {
+        $("#filter-all").removeClass("active");
+        $("#filter-pending").removeClass("active");
+        $("#filter-completed").addClass("active");
+      } else {
+        // unknown status? Weird
+      }
+    } else {
+      $("#filter-all").addClass("active");
+      $("#filter-pending").removeClass("active");
+      $("#filter-completed").removeClass("active");
+    }
+    console.log('update_left_navbar-');
+  }
+
   (function($) {
   $(document).ready(function() {
     // Upon clicking the find button, show the find dropdown content
@@ -85,31 +106,27 @@
       $(".find-pf-dropdown-container").hide();
     });
 
+    $("#filter-all").click(function(){
+      delete document.filter_value['status'];
+      send_filter_updates();
+    });
+
+    $("#filter-pending").click(function(){
+      document.filter_value['status'] = 'pending';
+      send_filter_updates();
+    });
+
+    $("#filter-completed").click(function(){
+      document.filter_value['status'] = 'completed';
+      send_filter_updates();
+    });
+
     // Initialize the vertical navigation
     $().setupVerticalNavigation(true);
-
-    function update_left_navbar(){
-      if ('status' in document.filter_value) {
-        if (document.filter_value.status == 'pending') {
-          $("#filter-all").removeClass("active");
-          $("#filter-pending").addClass("active");
-          $("#filter-completed").removeClass("active");
-        } else if (document.filter_value.status == 'completed') {
-          $("#filter-all").removeClass("active");
-          $("#filter-pending").removeClass("active");
-          $("#filter-completed").addClass("active");
-        } else {
-          // unknown status? Weird
-        }
-      } else {
-        $("#filter-all").addClass("active");
-        $("#filter-pending").removeClass("active");
-        $("#filter-completed").removeClass("active");
-      }
-    }
   });
 })(jQuery);
 </script>
 
+</body>
 </html>
       

@@ -55,13 +55,16 @@
 </div>
 
 <script>
-$(document).ready(function () {
-  function update_total_task_count(total){
-    console.log('update_total_task_count+');
-    $('#total').text(total + ' results');
-    console.log('update_total_task_count-');
-  }
 
+function send_filter_updates(){
+  console.log('send_filter_updates+');
+  filter_value_str = JSON.stringify(document.filter_value);
+  console.log('filter_value: '+filter_value_str);
+  document.sock.send(filter_value_str);
+  console.log('send_filter_updates-');
+}
+
+$(document).ready(function () {
   $('.filter-close').click(function () {
     console.log('filter-close+');
     id = $(this).attr('id');
@@ -70,8 +73,7 @@ $(document).ready(function () {
     filter_name = parts[parts.length - 1];
     console.log('filter_name: '+filter_name);
     delete document.filter_value[filter_name];
-    console.log('filter_value: '+document.filter_value);
-    document.sock.send(JSON.stringify(document.filter_value));
+    send_filter_updates();
     console.log('filter-close-');
   });
 

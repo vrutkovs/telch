@@ -50,6 +50,12 @@
     })
   }
 
+  function update_total_task_count(total){
+    console.log('update_total_task_count+');
+    $('#total').text(total + ' results');
+    console.log('update_total_task_count-');
+  }
+
   $(document).ready(function () {
     var tasks = 0;
 
@@ -76,10 +82,8 @@
             $("#filter_toolbar").append(dta.filter_html);
             console.log('ws: filter_html-');
           } else if ('task' in dta) {
-            console.log('ws: task+');
             $('#tasks').append(dta.task);
             tasks++;
-            console.log('ws: task-');
           }
         } catch (e) {
           // Some unparsable json :/
