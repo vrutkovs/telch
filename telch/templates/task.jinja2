@@ -74,9 +74,12 @@
           <dt>{{ labels['status'] }}</dt>
           <dd>{{ task.status }}</dd>
           {% if task.tags %}
-          <dt>{{ labels['tags'] }}</dt>
-          <dd><span class="fa fa-tag"></span>&nbsp;
-          {{ task.tags|join(',&nbsp;<span class="fa fa-tag"></span>&nbsp;') }}</dd>
+            <dt>{{ labels['tags'] }}</dt>
+            <dd><ul class="list-unstyled">
+            {%- for tag in task.tags %}
+              <li><span class="fa fa-tag"></span>&nbsp;{{tag}}</li>
+            {%-endfor%}
+            </ul>
           {% endif %}
           <dt>{{ labels['urgency'] }}</dt>
           <dd>{{ task.urgency }}</dd>
