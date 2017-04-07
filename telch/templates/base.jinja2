@@ -15,6 +15,7 @@
     <script src="/static/bower/c3/c3.min.js"></script>
     <script src="/static/bower/d3/d3.min.js"></script>
     <script src="/static/bower/matchHeight/dist/jquery.matchHeight-min.js"></script>
+    <script src="/static/js/scripts.js"></script>
 
     {% block extra_head %}{% endblock %}
     <title>Tasks</title>
@@ -73,102 +74,6 @@
 
       
 <script>
-  function update_left_navbar(){
-    console.log('update_left_navbar+');
-    if ('status' in document.filter_value) {
-      if (document.filter_value.status == 'pending') {
-        $("#filter-all").removeClass("active");
-        $("#filter-pending").addClass("active");
-        $("#filter-completed").removeClass("active");
-      } else if (document.filter_value.status == 'completed') {
-        $("#filter-all").removeClass("active");
-        $("#filter-pending").removeClass("active");
-        $("#filter-completed").addClass("active");
-      } else {
-        // unknown status? Weird
-      }
-    } else {
-      $("#filter-all").addClass("active");
-      $("#filter-pending").removeClass("active");
-      $("#filter-completed").removeClass("active");
-    }
-
-    // Hide 'Clear all filters' if none are set
-    if (document.filter_value == {}) {
-      $("#filter-clear").hide();
-    } else {
-      $("#filter-clear").show();
-    }
-
-    // Update dropdown values if set
-    if ('order' in document.filter_value) {
-      value = document.filter_value.order;
-      $("#filter-order").attr('data-selected', value);
-      $("#filter-order").children().removeClass();
-      $("#filter-order").children().addClass('fa');
-      $("#filter-order").children().addClass('fa-sort-alpha-'+value);
-    }
-
-    if ('sortby' in document.filter_value) {
-      value = document.filter_value.sortby;
-      $("#filter-sortby").attr('data-selected', value);
-      list = $(".dropdown-menu[data-field='sortby']");
-      list.children().removeClass("selected");
-      li = $(".dropdown-menu[data-field='sortby'] > li[data-value='"+value+"'");
-      li.addClass("selected");
-
-      $("#filter-sortby").html(li.text() + ' <span class="caret"></span>');
-    }
-
-    if ('substring' in document.filter_value) {
-      substring = document.filter_value.substring;
-      for (var key in substring) {
-        console.log("substring key:"+key+" value: "+substring[key]);
-        $("#filter-substring").attr('data-selected', key);
-        $("#filter-substring-ddown").children().removeClass("selected");
-        li = $("#filter-substring-ddown > li[data-value='"+key+"'");
-        console.log("li: "+li.text());
-        li.addClass("selected");
-        $("#filter-substring").html(li.text() + ' <span class="caret"></span>');
-
-        $("#filter-text").val(substring[key]);
-        break;
-      }
-    }
-
-    console.log('update_left_navbar-');
-  }
-
-  (function($) {
-  $(document).ready(function() {
-    // Upon clicking the find button, show the find dropdown content
-    $(".btn-find").click(function () {
-      $(this).parent().find(".find-pf-dropdown-container").toggle();
-    });
-    // Upon clicking the find close button, hide the find dropdown content
-    $(".btn-find-close").click(function () {
-      $(".find-pf-dropdown-container").hide();
-    });
-
-    $("#filter-all").click(function(){
-      delete document.filter_value['status'];
-      send_filter_updates();
-    });
-
-    $("#filter-pending").click(function(){
-      document.filter_value['status'] = 'pending';
-      send_filter_updates();
-    });
-
-    $("#filter-completed").click(function(){
-      document.filter_value['status'] = 'completed';
-      send_filter_updates();
-    });
-
-    // Initialize the vertical navigation
-    $().setupVerticalNavigation(true);
-  });
-})(jQuery);
 </script>
 
 </body>
