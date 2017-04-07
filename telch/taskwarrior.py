@@ -15,7 +15,7 @@ def get_tasks_matching(w, filter_dict):
 
     if 'substring' in filter_dict:
         for key, value in filter_dict['substring'].items():
-            tasks = [x for x in tasks if value in x.get(key)]
+            tasks = [x for x in tasks if value.lower() in x.get(key, '').lower()]
 
     if 'sortby' in filter_dict:
         order = filter_dict.get('order', 'asc')
