@@ -80,13 +80,6 @@
       } else {
       }
     })
-
-    // click the close button, hide the expand row and remove the active status
-    $(".list-group-item-container .close").on("click", function (){
-      $(this).parent().addClass("hidden")
-        .parent().removeClass("list-view-pf-expand-active")
-          .find(".fa-angle-right").removeClass("fa-angle-down");
-    })
   }
 
   function reset_filter(){
@@ -240,15 +233,6 @@
   (function($) {
   $(document).ready(function() {
     var tasks = 0;
-
-    // Upon clicking the find button, show the find dropdown content
-    $(".btn-find").click(function () {
-      $(this).parent().find(".find-pf-dropdown-container").toggle();
-    });
-    // Upon clicking the find close button, hide the find dropdown content
-    $(".btn-find-close").click(function () {
-      $(".find-pf-dropdown-container").hide();
-    });
 
     // Sync button
     $("#sync-button").click(function() {
