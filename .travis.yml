@@ -14,9 +14,8 @@ install:
   - "pip install -r requirements.txt"
   - "pip install -r requirements_dev.txt"
   - "flake8 telch"
-  - "python setup.py build"
 
-script: "python setup.py test"
+script: "python setup.py build"
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.5" ]]; then
