@@ -38,10 +38,16 @@
       <span class="spinner spinner-inline spinner-xs" id="progress-spinner" class='invisible'></span>
       <p>Active filters:</p>
       <ul class="list-inline">
-        {% for key, value in filters.items() if key != 'substring' %}
+        {% for key, value in filters.items() %}
           <li>
             <span class="label label-info">
+              {%- if key != 'substring' %}
               {{ labels[key] }}: {{ labels[value] if value in labels else value|capitalize }}
+              {%- else %}
+                {% for subs_key, subs_value in value.items() %}
+                  {{ labels[subs_key] }} contains "{{ subs_value }}"
+                {% endfor %}
+              {% endif %}
               <a href="#" id="filter_close_{{key}}" class='filter-close'><span class="pficon pficon-close"></span></a>
             </span>
           </li>
