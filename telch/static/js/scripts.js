@@ -111,6 +111,94 @@
     console.log('send_filter_updates-');
   }
 
+  function setup_filter_scripts() {
+      $("#filter-all").click(function(){
+        delete document.filter_value['status'];
+        send_filter_updates();
+      });
+
+      $("#filter-pending").click(function(){
+        document.filter_value['status'] = 'pending';
+        send_filter_updates();
+      });
+
+      $("#filter-completed").click(function(){
+        document.filter_value['status'] = 'completed';
+        send_filter_updates();
+      });
+
+      // Initialize the vertical navigation
+      $().setupVerticalNavigation(true);
+
+      // Update filters
+      $('.filter-close').click(function () {
+        console.log('filter-close+');
+        id = $(this).attr('id');
+        console.log('id: '+id);
+        parts = id.split('_');
+        filter_name = parts[parts.length - 1];
+        console.log('filter_name: '+filter_name);
+        delete document.filter_value[filter_name];
+        send_filter_updates();
+        console.log('filter-close-');
+      });
+
+      $('#filter-clear').click(function(){
+        document.filter_value = {};
+        send_filter_updates();
+      });
+
+      $('.dropdown-menu > li').click(function(){
+        console.log('dropdown-menu+');
+        value = $(this).text();
+        btn = $(this).parent().attr("aria-labelledby");
+        console.log('Setting '+btn+' to '+value);
+        $("#"+btn).html(value + ' <span class="caret"></span>');
+        $(this).parent().children().removeClass('selected');
+        $(this).addClass('selected');
+
+        field = $(this).parent().attr('data-field');
+        console.log('data field is '+field);
+        if (field) {
+          json_value = $(this).attr('data-value');
+          console.log('json value is '+json_value);
+          document.filter_value[field] = json_value;
+          send_filter_updates();
+        }
+        console.log('dropdown-menu-');
+      });
+
+      $("#filter-order").click(function(){
+        console.log('filter-order+');
+        value = $(this).attr("data-selected");
+        new_value = 'asc';
+        if (value == 'asc') {
+          new_value = 'desc';
+        }
+        $(this).attr("data-selected", new_value);
+
+        $(this).children().removeClass('fa-sort-alpha-'+value);
+        $(this).children().addClass('fa-sort-alpha-'+new_value);
+
+        field = $(this).attr('data-field');
+        document.filter_value[field] = new_value;
+        send_filter_updates();
+        console.log('filter-order-');
+      });
+
+      $("#filter-text").donetyping(function(){
+        console.log('substring+');
+        text = $(this).val();
+        field = $("#filter-substring-ddown > li.selected").attr('data-value');
+        console.log('Looking for "'+text+'" in field "'+field+"'");
+        json = {}
+        json[field] = text
+        document.filter_value['substring'] = json;
+        send_filter_updates();
+        console.log('substring-');
+      });
+  }
+
   (function($){
       $.fn.extend({
           donetyping: function(callback,timeout){
@@ -162,93 +250,6 @@
       $(".find-pf-dropdown-container").hide();
     });
 
-    $("#filter-all").click(function(){
-      delete document.filter_value['status'];
-      send_filter_updates();
-    });
-
-    $("#filter-pending").click(function(){
-      document.filter_value['status'] = 'pending';
-      send_filter_updates();
-    });
-
-    $("#filter-completed").click(function(){
-      document.filter_value['status'] = 'completed';
-      send_filter_updates();
-    });
-
-    // Initialize the vertical navigation
-    $().setupVerticalNavigation(true);
-
-    // Update filters
-    $('.filter-close').click(function () {
-      console.log('filter-close+');
-      id = $(this).attr('id');
-      console.log('id: '+id);
-      parts = id.split('_');
-      filter_name = parts[parts.length - 1];
-      console.log('filter_name: '+filter_name);
-      delete document.filter_value[filter_name];
-      send_filter_updates();
-      console.log('filter-close-');
-    });
-
-    $('#filter-clear').click(function(){
-      document.filter_value = {};
-      send_filter_updates();
-    });
-
-    $('.dropdown-menu > li').click(function(){
-      console.log('dropdown-menu+');
-      value = $(this).text();
-      btn = $(this).parent().attr("aria-labelledby");
-      console.log('Setting '+btn+' to '+value);
-      $("#"+btn).html(value + ' <span class="caret"></span>');
-      $(this).parent().children().removeClass('selected');
-      $(this).addClass('selected');
-
-      field = $(this).parent().attr('data-field');
-      console.log('data field is '+field);
-      if (field) {
-        json_value = $(this).attr('data-value');
-        console.log('json value is '+json_value);
-        document.filter_value[field] = json_value;
-        send_filter_updates();
-      }
-      console.log('dropdown-menu-');
-    });
-
-    $("#filter-order").click(function(){
-      console.log('filter-order+');
-      value = $(this).attr("data-selected");
-      new_value = 'asc';
-      if (value == 'asc') {
-        new_value = 'desc';
-      }
-      $(this).attr("data-selected", new_value);
-
-      $(this).children().removeClass('fa-sort-alpha-'+value);
-      $(this).children().addClass('fa-sort-alpha-'+new_value);
-
-      field = $(this).attr('data-field');
-      document.filter_value[field] = new_value;
-      send_filter_updates();
-      console.log('filter-order-');
-    });
-
-    $("#filter-text").donetyping(function(){
-      console.log('substring+');
-      text = $(this).val();
-      field = $("#filter-substring-ddown > li.selected").attr('data-value');
-      console.log('Looking for "'+text+'" in field "'+field+"'");
-      json = {}
-      json[field] = text
-      document.filter_value['substring'] = json;
-      send_filter_updates();
-      console.log('substring-');
-    });
-
-
     // Listen to websocket changes
     document.sock = new WebSocket('ws://' + window.location.host + document.ws_url);
       document.sock.onmessage = function(event) {
@@ -264,6 +265,7 @@
             console.log('ws: filter_json+');
             document.filter_value = dta.filter_json;
             update_left_navbar();
+            setup_filter_scripts();
             console.log('ws: filter_json-');
           } else if ('filter_html' in dta) {
             console.log('ws: filter_html+');
