@@ -60,7 +60,6 @@
         break;
       }
     }
-
     console.log('update_left_navbar-');
   }
 
@@ -190,15 +189,6 @@
         send_filter_updates();
         console.log('substring-');
       });
-
-      $("#projects-secondary > ul > li > a").click(function(){
-        console.log('project-list+');
-        value = $(this).parent().attr("data-value");
-        console.log('project:'+value);
-        document.filter_value['project'] = value;
-        send_filter_updates();
-        console.log('project-list-');
-      });
   }
 
   (function($){
@@ -247,6 +237,16 @@
     $("#sync-button").click(function() {
       $(this).addClass('navbar-button-spin');
       document.sock.send("sync");
+    });
+
+    // Projects list
+    $("#projects-secondary > ul > li > a").click(function(){
+      console.log('project-list+');
+      value = $(this).parent().attr("data-value");
+      console.log('project:'+value);
+      document.filter_value['project'] = value;
+      send_filter_updates();
+      console.log('project-list-');
     });
 
     // Listen to websocket changes
