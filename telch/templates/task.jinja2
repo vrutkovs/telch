@@ -20,13 +20,13 @@
       </div>
     </div> -->
 
-    {% set priority_icon = "fa-tasks" %}
+    {% set priority_icon = "fa-minus text-muted" %}
     {% if task.priority == "H" %}
-      {% set priority_icon = "fa-angle-double-up" %}
+      {% set priority_icon = "fa-angle-double-up text-danger" %}
     {% elif task.priority == "M" %}
-      {% set priority_icon = "fa-angle-up" %}
+      {% set priority_icon = "fa-angle-up text-warning" %}
     {% elif task.priority == "L" %}
-      {% set priority_icon = "fa-angle-down" %}
+      {% set priority_icon = "fa-angle-down text-success" %}
     {% endif %}
 
     <div class="list-view-pf-main-info">
