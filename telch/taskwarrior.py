@@ -18,7 +18,7 @@ def filter_tasks_by_field(tasks, key, value):
                     if value.lower() in str(y).lower():
                         result.append(x)
                         break
-                except:
+                except:  # noqa
                     pass
         else:
             found_field = str(x.get(key, '')).lower()
