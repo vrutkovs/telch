@@ -1,4 +1,4 @@
-FROM fedora:25
+FROM fedora:26
 
 RUN dnf update -y && \
     dnf install -y python3-pip git npm task && \
