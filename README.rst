@@ -26,7 +26,9 @@ Features
 --------
 
 * Display Taskwarrior tasks
+.. image:: https://user-images.githubusercontent.com/114501/29717902-39a61546-89b1-11e7-89a5-892cb3a4e81b.png
 * Sort by priority, project, due date etc.
+.. image:: https://user-images.githubusercontent.com/114501/29717895-33bb0bb4-89b1-11e7-9168-6536bf01f660.png
 
 TODO
 --------
