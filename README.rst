@@ -3,16 +3,8 @@ Telch
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/telch.svg
-        :target: https://pypi.python.org/pypi/telch
-
 .. image:: https://img.shields.io/travis/vrutkovs/telch.svg
         :target: https://travis-ci.org/vrutkovs/telch
-
-.. image:: https://readthedocs.org/projects/telch/badge/?version=latest
-        :target: https://telch.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
 .. image:: https://pyup.io/repos/github/vrutkovs/telch/shield.svg
      :target: https://pyup.io/repos/github/vrutkovs/telch/
      :alt: Updates
@@ -22,13 +14,26 @@ Telch is a web interface for Taskwarrior
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://telch.readthedocs.io.
+* Documentation: coming soon?
 
+HOWTO
+--------
+```
+sudo docker run --rm --name=telch -ti -v ~/.taskrc:/root/.taskrc -v ~/.task:/root/.task -p 80:8080 vrutkovs/telch
+```
 
 Features
 --------
 
-* TODO
+* Display Taskwarrior tasks
+* Sort by priority, project, due date etc.
+
+TODO
+--------
+
+* Documentation
+* Tests
+* CRUD
 
 Credits
 ---------
