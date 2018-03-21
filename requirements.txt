@@ -1,4 +1,4 @@
-aiohttp==3.0.9
+aiohttp==3.1.0
 aiohttp_jinja2==0.17.0
 requests==2.18.4
 taskw==1.2.0
